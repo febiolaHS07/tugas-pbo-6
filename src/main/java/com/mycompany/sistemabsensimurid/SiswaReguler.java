@@ -8,22 +8,17 @@ package com.mycompany.sistemabsensimurid;
  *
  * @author HYPE AMD
  */
+
 public class SiswaReguler extends Siswa {
     private String mataKuliah;
 
-    public SiswaReguler(String nama, int nisn, int jumlahHadir, String mataKuliah) {
-        super(nama, nisn, jumlahHadir);
+    public SiswaReguler(String nama, int nim, int jumlahHadir, String mataKuliah) {
+        super(nama, nim, jumlahHadir);
         this.mataKuliah = mataKuliah;
     }
 
-    public String getMataKuliah() {
-        return this.mataKuliah;
-    }
+    public String getMataKuliah() { return mataKuliah; }
 
-    public void setMataKuliah(String mataKuliah) {
-        this.mataKuliah = mataKuliah;
-    }
-    
     @Override
     public void tampilkanInfo() {
         System.out.print("[Reguler ] ");
@@ -35,8 +30,7 @@ public class SiswaReguler extends Siswa {
     public void statusAbsensi() {
         int minimalHadir = (int) Math.ceil(TOTAL_PERTEMUAN * 0.80);
         boolean memenuhi = getJumlahHadir() >= minimalHadir;
-
-        System.out.printf("-> Syarat Reguler : Minimal %d/%d pertemuan (80%%) | Status: %s%n",
+        System.out.printf("   -> Syarat Reguler     : Minimal %d/%d pertemuan (80%%) | Status: %s%n",
                 minimalHadir, TOTAL_PERTEMUAN, (memenuhi ? "MEMENUHI SYARAT" : "TIDAK MEMENUHI SYARAT"));
     }
 }

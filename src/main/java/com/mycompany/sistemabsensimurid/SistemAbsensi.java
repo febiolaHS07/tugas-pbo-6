@@ -4,25 +4,26 @@
  */
 package com.mycompany.sistemabsensimurid;
 
-/**
- *
- * @author HYPE AMD
- */
-// File: SistemAbsensi.java
-import java.util.Scanner;
-
-// File: SistemAbsensi.java
 import java.util.Scanner;
 
 public class SistemAbsensi {
 
+    public static void prosesAbsensi(Siswa siswa) {
+        siswa.statusAbsensi(); 
+    }
+
     public static void cariSiswa(String nama, Siswa[] daftar, int total) {
-        System.out.println("\n--- Hasil Pencarian Nama: '" + nama + "' ---");
+        if (total == 0) {
+            System.out.println("Belum ada data siswa yang tersimpan untuk dicari.");
+            return;
+        }
+
+        System.out.println("\n--- Hasil Pencarian Nama (Tipe Parameter: String): '" + nama + "' ---");
         boolean ditemukan = false;
         for (int i = 0; i < total; i++) {
             if (daftar[i].getNama().equalsIgnoreCase(nama)) {
                 daftar[i].tampilkanInfo();
-                daftar[i].statusAbsensi();
+                prosesAbsensi(daftar[i]);
                 ditemukan = true;
             }
         }
@@ -31,147 +32,148 @@ public class SistemAbsensi {
         }
     }
 
-   
-    public static void cariSiswa(int nisn, Siswa[] daftar, int total) {
-        System.out.println("\n--- Hasil Pencarian NISN: " + nisn + " ---");
+    public static void cariSiswa(int nim, Siswa[] daftar, int total) {
+        if (total == 0) {
+            System.out.println("Belum ada data siswa yang tersimpan untuk dicari.");
+            return;
+        }
+
+        System.out.println("\n--- Hasil Pencarian NIM (Tipe Parameter: Integer): " + nim + " ---");
         boolean ditemukan = false;
         for (int i = 0; i < total; i++) {
-            if (daftar[i].getNisn() == nisn) {
+            if (daftar[i].getNim() == nim) {
                 daftar[i].tampilkanInfo();
-                daftar[i].statusAbsensi();
+                prosesAbsensi(daftar[i]);
                 ditemukan = true;
             }
         }
         if (!ditemukan) {
-            System.out.println("Data siswa dengan NISN " + nisn + " tidak ditemukan.");
+            System.out.println("Data siswa dengan NIM " + nim + " tidak ditemukan.");
         }
     }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Siswa[] daftarSiswa = new Siswa[20]; 
+
+        Siswa[] daftarSiswa = new Siswa[20];
         int jumlahSiswa = 0;
+
         boolean isRunning = true;
-        
-        System.out.println("==========================================================================");
-        System.out.println("                  SISTEM MANAJEMEN ABSENSI MAHASISWA                      ");
-        System.out.println("==========================================================================");
 
-     
         while (isRunning) {
-            System.out.println("\n=========================== MENU UTAMA ===========================");
+            System.out.println("\n==================================================================");
+            System.out.println("                   SISTEM ABSENSI AKADEMIK                        ");
+            System.out.println("==================================================================");
             System.out.println("1. Tambah Data Siswa Baru");
-            System.out.println("2. Tampilkan Seluruh Data Presensi (Method Overriding)");
-            System.out.println("3. Cari Data Siswa (Method Overloading)");
-            System.out.println("4. Keluar Sistem");
+            System.out.println("2. Tampilkan Seluruh Data & Status Absensi");
+            System.out.println("3. Cari Data Siswa");
+            System.out.println("4. Keluar Program");
             System.out.print("Pilih Menu (1-4): ");
-
-            if (!scanner.hasNextInt()) {
-                System.out.println("Input harus berupa angka!");
-                scanner.next();
-                continue;
-            }
 
             int pilihan = scanner.nextInt();
             scanner.nextLine();
 
             switch (pilihan) {
-                case 1 -> {
-                    if (jumlahSiswa < daftarSiswa.length) {
-                        System.out.println("\n--- Tambah Data Siswa Baru ---");
-                        System.out.println("Pilih Tipe Siswa:");
-                        System.out.println("1. Siswa Reguler");
-                        System.out.println("2. Siswa Beasiswa");
-                        System.out.print("Pilihan (1/2): ");
-                        
-                        int tipe = scanner.nextInt();
-                        scanner.nextLine();
-
-                        System.out.print("Masukkan Nama Siswa  : ");
-                        String nama = scanner.nextLine();
-                        System.out.print("Masukkan NISN        : ");
-                        int nisn = scanner.nextInt();
-                        
-                
-                        int hadir;
-                        do {
-                            System.out.print("Masukkan Jml Hadir (0-16) : ");
-                            while (!scanner.hasNextInt()) {
-                                System.out.println("LOG VALIDASI: Input harus berupa angka!");
-                                scanner.next();
-                            }
-                            hadir = scanner.nextInt();
-                            
-                            if (hadir < 0 || hadir > Siswa.TOTAL_PERTEMUAN) {
-                                System.out.println("LOG VALIDASI: Kehadiran tidak boleh < 0 atau > " + Siswa.TOTAL_PERTEMUAN + "! Coba lagi.");
-                            }
-                        } while (hadir < 0 || hadir > Siswa.TOTAL_PERTEMUAN);
-
-                        scanner.nextLine(); // Clear buffer
-                        System.out.print("Masukkan Mata Kuliah : ");
-                        String mataKuliah = scanner.nextLine();
-
-                        if (tipe == 1) {
-                            daftarSiswa[jumlahSiswa++] = new SiswaReguler(nama, nisn, hadir, mataKuliah);
-                        } else if (tipe == 2) {
-                            daftarSiswa[jumlahSiswa++] = new SiswaBeasiswa(nama, nisn, hadir, mataKuliah);
-                        } else {
-                            System.out.println("Tipe tidak valid! Pendaftaran dibatalkan.");
-                            break;
-                        }
-                        System.out.println("-> SUKSES: Data siswa berhasil disimpan.");
-                    } else {
-                        System.out.println("Kapasitas penyimpanan array sudah penuh!");
+                case 1:
+                    if (jumlahSiswa >= daftarSiswa.length) {
+                        System.out.println("Kapasitas penyimpanan data siswa sudah penuh!");
+                        break;
                     }
-                }
 
-                case 2 -> {
-                    System.out.println("\n===============================================================================================");
-                    System.out.println("                                  DAFTAR PRESENSI SISWA                                        ");
-                    System.out.println("===============================================================================================");
-                    System.out.printf("Total Objek Terbuat (Static Counter): %d%n", Siswa.totalSiswaBerhasilDibuat);
-                    System.out.println("-----------------------------------------------------------------------------------------------");
+                    System.out.println("\n--- Pilih Jenis Siswa ---");
+                    System.out.println("1. Siswa Reguler");
+                    System.out.println("2. Siswa Beasiswa");
+                    System.out.println("3. Siswa Internasional");
+                    System.out.print("Pilihan (1-3): ");
+                    int jenis = scanner.nextInt();
+                    scanner.nextLine();
 
+                    if (jenis < 1 || jenis > 3) {
+                        System.out.println("Pilihan jenis siswa tidak valid!");
+                        break;
+                    }
+
+                    System.out.print("Masukkan Nama Siswa  : ");
+                    String nama = scanner.nextLine();
+                    System.out.print("Masukkan NIM        : ");
+                    int nim = scanner.nextInt();
+
+                    int hadir;
+                    do {
+                        System.out.print("Masukkan Jumlah Hadir (0-16) : ");
+                        hadir = scanner.nextInt();
+                        if (hadir < 0 || hadir > Siswa.TOTAL_PERTEMUAN) {
+                            System.out.println("Wrong: Kehadiran harus 0 - 16!");
+                        }
+                    } while (hadir < 0 || hadir > Siswa.TOTAL_PERTEMUAN);
+
+                    scanner.nextLine();
+
+                    if (jenis == 1) {
+                        System.out.print("Masukkan Mata Kuliah : ");
+                        String mk = scanner.nextLine();
+                        daftarSiswa[jumlahSiswa++] = new SiswaReguler(nama, nim, hadir, mk);
+                    } else if (jenis == 2) {
+                        System.out.print("Masukkan Mata Kuliah : ");
+                        String mk = scanner.nextLine();
+                        daftarSiswa[jumlahSiswa++] = new SiswaBeasiswa(nama, nim, hadir, mk);
+                    } else if (jenis == 3) {
+                        System.out.print("Masukkan Mata Kuliah : ");
+                        String mk = scanner.nextLine();
+                        daftarSiswa[jumlahSiswa++] = new SiswaInternational(nama, nim, hadir, mk);
+                    }
+
+                    System.out.println("-> SUKSES: Data siswa berhasil disimpan.");
+                    break;
+
+                case 2:
+                    System.out.println("\n--- DAFTAR PRESENSI & STATUS ABSENSI ---");
                     if (jumlahSiswa == 0) {
-                        System.out.println("Belum ada data siswa yang tersimpan.");
+                        System.out.println("Belum ada data siswa.");
                     } else {
                         for (int i = 0; i < jumlahSiswa; i++) {
                             System.out.printf("%d. ", (i + 1));
                             daftarSiswa[i].tampilkanInfo(); 
-                            daftarSiswa[i].statusAbsensi();  
-                            System.out.println("-----------------------------------------------------------------------------------------------");
+                            prosesAbsensi(daftarSiswa[i]); 
                         }
+                        System.out.println("\n* Total Siswa Terdaftar: " + Siswa.totalSiswaBerhasilDibuat);
                     }
-                }
+                    break;
 
-                case 3 -> {
-                    System.out.println("\n--- Fitur Pencarian Data (Overloading) ---");
-                    System.out.println("1. Cari Berdasarkan Nama (Teks)");
-                    System.out.println("2. Cari Berdasarkan NISN (Angka)");
-                    System.out.print("Pilih Opsi (1/2): ");
-                    int opsiCari = scanner.nextInt();
+                case 3:
+                    System.out.println("\n--- Fitur Cari Data (Method Overloading) ---");
+                    if (jumlahSiswa == 0) {
+                        System.out.println("Belum ada data siswa yang tersimpan.");
+                        break;
+                    }
+
+                    System.out.println("1. Cari berdasarkan Nama (Parameter String)");
+                    System.out.println("2. Cari berdasarkan NIM (Parameter Integer)");
+                    System.out.print("Pilih Mode (1/2): ");
+                    int mode = scanner.nextInt();
                     scanner.nextLine();
 
-                    if (opsiCari == 1) {
+                    if (mode == 1) {
                         System.out.print("Masukkan Nama: ");
                         String namaCari = scanner.nextLine();
                         cariSiswa(namaCari, daftarSiswa, jumlahSiswa);
-                    } else if (opsiCari == 2) {
-                        System.out.print("Masukkan NISN: ");
-                        int nisnCari = scanner.nextInt();
-                        scanner.nextLine();
-                        cariSiswa(nisnCari, daftarSiswa, jumlahSiswa);
+                    } else if (mode == 2) {
+                        System.out.print("Masukkan NIM: ");
+                        int nimCari = scanner.nextInt();
+                        cariSiswa(nimCari, daftarSiswa, jumlahSiswa);
                     } else {
-                        System.out.println("Opsi pencarian tidak valid.");
+                        System.out.println("Pilihan mode tidak valid.");
                     }
-                }
+                    break;
 
-                case 4 -> {
-                    System.out.println("\nTerima kasih! Program selesai dijalankan.");
+                case 4:
+                    System.out.println("Terima kasih! Program selesai.");
                     isRunning = false;
-                }
+                    break;
 
-                default -> System.out.println("Pilihan tidak valid. Silakan pilih 1-4.");
+                default:
+                    System.out.println("Pilihan menu tidak valid!");
+                    break;
             }
         }
         scanner.close();
