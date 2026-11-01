@@ -9,7 +9,7 @@ package com.mycompany.sistemabsensimurid;
  * @author HYPE AMD
  */
 
-public class SiswaReguler extends Siswa {
+public class SiswaReguler extends Siswa implements Pelaporan {
     private String mataKuliah;
 
     public SiswaReguler(String nama, int nim, int jumlahHadir, String mataKuliah) {
@@ -32,5 +32,11 @@ public class SiswaReguler extends Siswa {
         boolean memenuhi = getJumlahHadir() >= minimalHadir;
         System.out.printf("   -> Syarat Reguler     : Minimal %d/%d pertemuan (80%%) | Status: %s%n",
                 minimalHadir, TOTAL_PERTEMUAN, (memenuhi ? "MEMENUHI SYARAT" : "TIDAK MEMENUHI SYARAT"));
+    }
+
+    @Override
+    public void cetakLaporan() {
+        System.out.println("   -> [Laporan] Laporan kehadiran reguler " + getNama() + " untuk mata kuliah "
+                + mataKuliah + " dicetak: " + getJumlahHadir() + " dari " + TOTAL_PERTEMUAN + " pertemuan.");
     }
 }

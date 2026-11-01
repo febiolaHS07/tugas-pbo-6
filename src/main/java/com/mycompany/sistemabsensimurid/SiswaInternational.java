@@ -8,7 +8,7 @@ package com.mycompany.sistemabsensimurid;
  *
  * @author HYPE AMD
  */
-public class SiswaInternational extends Siswa {
+public class SiswaInternational extends Siswa implements Peringatan {
     private String mataKuliah;
 
     public SiswaInternational(String nama, int nim, int jumlahHadir, String mataKuliah) {
@@ -31,5 +31,15 @@ public class SiswaInternational extends Siswa {
         boolean memenuhi = getJumlahHadir() >= minimalHadir;
         System.out.printf("   -> Syarat Internasional: Minimal %d/%d pertemuan (75%%) | Status: %s%n",
                 minimalHadir, TOTAL_PERTEMUAN, (memenuhi ? "MEMENUHI SYARAT" : "TIDAK MEMENUHI SYARAT"));
+    }
+
+    @Override
+    public void kirimPeringatan() {
+        int minimalHadir = (int) Math.ceil(TOTAL_PERTEMUAN * 0.75);
+        if (getJumlahHadir() < minimalHadir) {
+            System.out.println("   -> [Peringatan] " + getNama() + ", kehadiran di bawah 75%. Segera hubungi kantor urusan internasional!");
+        } else {
+            System.out.println("   -> [Peringatan] " + getNama() + ", kehadiran aman. Tidak ada peringatan untuk saat ini.");
+        }
     }
 }

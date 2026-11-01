@@ -9,7 +9,17 @@ import java.util.Scanner;
 public class SistemAbsensi {
 
     public static void prosesAbsensi(Siswa siswa) {
-        siswa.statusAbsensi(); 
+        siswa.statusAbsensi();
+
+        if (siswa instanceof Pelaporan) {
+            Pelaporan laporan = (Pelaporan) siswa;
+            laporan.cetakLaporan();
+        }
+
+        if (siswa instanceof Peringatan) {
+            Peringatan peringatan = (Peringatan) siswa;
+            peringatan.kirimPeringatan();
+        }
     }
 
     public static void cariSiswa(String nama, Siswa[] daftar, int total) {
@@ -57,6 +67,12 @@ public class SistemAbsensi {
 
         Siswa[] daftarSiswa = new Siswa[20];
         int jumlahSiswa = 0;
+
+        daftarSiswa[jumlahSiswa++] = new SiswaReguler("Andi Pratama", 1001, 14, "Struktur Data");
+        daftarSiswa[jumlahSiswa++] = new SiswaBeasiswa("Siti Rahma", 1002, 13, "Matematika Diskrit");
+        daftarSiswa[jumlahSiswa++] = new SiswaInternational("John Smith", 1003, 10, "Elektronika Digital");
+        daftarSiswa[jumlahSiswa++] = new SiswaBeasiswa("Budi Santoso", 1004, 16, "Pemrograman Java");
+        daftarSiswa[jumlahSiswa++] = new SiswaReguler("Dewi Lestari", 1005, 9, "Basis Data");
 
         boolean isRunning = true;
 

@@ -8,7 +8,7 @@ package com.mycompany.sistemabsensimurid;
  *
  * @author HYPE AMD
  */
-public class Siswa {
+public abstract class Siswa {
     private String nama;
     private int nim;
     private int jumlahHadir;
@@ -44,7 +44,5 @@ public class Siswa {
                 this.nim, this.nama, this.jumlahHadir, TOTAL_PERTEMUAN, getPersentaseKehadiran());
     }
 
-    public void statusAbsensi() {
-        System.out.println("Status: Mengikuti prosedur absensi akademik standar.");
-    }
-}
+    public abstract void statusAbsensi();
+}   
